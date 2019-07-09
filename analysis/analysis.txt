@@ -1,0 +1,114 @@
+Kevin Ngo	
+kn118
+Kassen Qian 
+kkq
+
+BE SURE TO READ This document which has detailed diagrams: http://bit.ly/201spring19-dna-analysis
+
+In answering these questions you should refer to the timings you generated from the 
+DNABenchmark program on your machine. Use these timings to answer three questions.
+
+The first two questions can be answered before coding and must be answered, 
+pushed to Git and Gradescope, before spring break starts.
+
+Question 1: are the benchmark timings for StringStrand consistent with the explanation 
+below that the time to execute cutAndSplice is O(b2S)? 
+
+No because the data from running the benchmark tests conflict with the explanation. The relationship
+between S and the time with b^2 kept constant is not linear. Which is what it should be if b^2 is kept 
+constant and S is increased. StringStrand has runtimes varying with b^2.
+
+dna length = 306
+cutting at enzyme gaattc
+-----
+Class	                splicee	      recomb	time	appends
+-----
+StringBuilderStrand:	            256	              0	0.000	0
+StringBuilderStrand:	            512	              0	0.000	0
+StringBuilderStrand:	          1,024	              0	0.000	0
+StringBuilderStrand:	          2,048	              0	0.000	0
+StringBuilderStrand:	          4,096	              0	0.000	0
+StringBuilderStrand:	          8,192	              0	0.000	0
+StringBuilderStrand:	         16,384	              0	0.000	0
+StringBuilderStrand:	         32,768	              0	0.000	0
+StringBuilderStrand:	         65,536	              0	0.000	0
+StringBuilderStrand:	        131,072	              0	0.000	0
+StringBuilderStrand:	        262,144	              0	0.000	0
+StringBuilderStrand:	        524,288	              0	0.000	0
+StringBuilderStrand:	      1,048,576	              0	0.000	0
+StringBuilderStrand:	      2,097,152	              0	0.000	0
+StringBuilderStrand:	      4,194,304	              0	0.000	0
+StringBuilderStrand:	      8,388,608	              0	0.000	0
+StringBuilderStrand:	     16,777,216	              0	0.000	0
+StringBuilderStrand:	     33,554,432	              0	0.000	0
+StringBuilderStrand:	     67,108,864	              0	0.000	0
+StringBuilderStrand:	    134,217,728	              0	0.000	0
+StringBuilderStrand:	    268,435,456	              0	0.000	0
+StringBuilderStrand:	    536,870,912	              0	0.000	0
+StringBuilderStrand:	  1,073,741,824	              0	0.000	0
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+	at java.base/java.util.Arrays.copyOf(Arrays.java:3745)
+	at java.base/java.lang.AbstractStringBuilder.ensureCapacityInternal(AbstractStringBuilder.java:172)
+	at java.base/java.lang.AbstractStringBuilder.append(AbstractStringBuilder.java:538)
+	at java.base/java.lang.StringBuilder.append(StringBuilder.java:174)
+	at DNABenchmark.main(DNABenchmark.java:110)
+
+
+Note that the value of b is half the number of calls to append since each cut (except the first) 
+is modeled by two calls of append in the method cutAndSplice -- see the code. 
+This means that b2 will be constant in the benchmark, but S will vary. 
+
+Question 2: are the benchmark timings for StringBuilderStrand consistent with the 
+explanation below that the time to execute cutAndSplice is O(bS)? 
+
+Yes, when graphed, the relation between S (splicee) and the times, the relationship was linear 
+which is consistent with the runtime efficiency proposed above O(bS).
+
+dna length = 312
+cutting at enzyme gaattc
+-----
+Class	                splicee	      recomb	time	appends
+-----
+StringBuilderStrand:	            256	              0	0.000	0
+StringBuilderStrand:	            512	              0	0.000	0
+StringBuilderStrand:	          1,024	              0	0.000	0
+StringBuilderStrand:	          2,048	              0	0.000	0
+StringBuilderStrand:	          4,096	              0	0.000	0
+StringBuilderStrand:	          8,192	              0	0.000	0
+StringBuilderStrand:	         16,384	              0	0.000	0
+StringBuilderStrand:	         32,768	              0	0.000	0
+StringBuilderStrand:	         65,536	              0	0.000	0
+StringBuilderStrand:	        131,072	              0	0.000	0
+StringBuilderStrand:	        262,144	              0	0.000	0
+StringBuilderStrand:	        524,288	              0	0.000	0
+StringBuilderStrand:	      1,048,576	              0	0.000	0
+StringBuilderStrand:	      2,097,152	              0	0.000	0
+StringBuilderStrand:	      4,194,304	              0	0.000	0
+StringBuilderStrand:	      8,388,608	              0	0.000	0
+StringBuilderStrand:	     16,777,216	              0	0.000	0
+StringBuilderStrand:	     33,554,432	              0	0.000	0
+StringBuilderStrand:	     67,108,864	              0	0.000	0
+StringBuilderStrand:	    134,217,728	              0	0.000	0
+StringBuilderStrand:	    268,435,456	              0	0.000	0
+StringBuilderStrand:	    536,870,912	              0	0.000	0
+StringBuilderStrand:	  1,073,741,824	              0	0.000	0
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+	at java.base/java.util.Arrays.copyOf(Arrays.java:3745)
+	at java.base/java.lang.AbstractStringBuilder.ensureCapacityInternal(AbstractStringBuilder.java:172)
+	at java.base/java.lang.AbstractStringBuilder.append(AbstractStringBuilder.java:538)
+	at java.base/java.lang.StringBuilder.append(StringBuilder.java:174)
+	at DNABenchmark.main(DNABenchmark.java:110)
+
+Note that the value of b is half the number of calls to append since each cut (except the first) 
+is modeled by two calls of append in the method cutAndSplice -- see the code. 
+This means that b will be constant in the benchmark, but S will vary. 
+
+Question 3: Explain why the time for LinkStrand does not change much at all over all 
+the runs in the benchmark program. Explain why you think memory is exhausted at 
+the specific strand size you see in your timings -- as compared to 
+exhaustion for String and StringBuilder.
+
+For LinkStrand, the memory exhausted at a much larger strand size than in StringStrand or 
+StringBuilderStrand because LinkStrand only uses S+N memory space whereas StringStrand and StringBuilderStrand 
+uses BS+N memory, where S is the size of the string, B is the number of times the string is inserted into the function,
+and N is the length of the strand.
